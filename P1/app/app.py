@@ -1,6 +1,5 @@
 #./app/app.py
-from flask import Flask
-import random
+from flask import Flask, render_template
 import re
 from math import sqrt
 
@@ -12,7 +11,7 @@ def hello_world():
 
 @app.route('/square_brackets/<str>')
 def strings(str):
-    pattern = r'(\[((\[\])*)\])*'
+    # Balanced se usa para controlar los corchetes que se abren y cierran, 0 = balanceado.
     balanced = 0
     stop_loop = True
     
@@ -21,6 +20,7 @@ def strings(str):
         if str[i] == '[':
             balanced += 1
         else:
+            # Si hay un corchete de cierre, ], y está balanceado a 0 quiere decir que no se a abierto uno previamente
             if balanced == 0:
                 stop_loop = False
                 break
@@ -44,7 +44,7 @@ def fibonacci(number):
         sumatory = fibonacci[i - 2] + fibonacci[i - 1]
         fibonacci.append(sumatory)
         
-    result = "Fibonacci result until " + number  +  " is " + str(fibonacci[number - 1])
+    result = "Fibonacci result until " + str(number)  +  " is " + str(fibonacci[number - 1])
     return result
 
 @app.route('/eratostenes/<int:number>')
@@ -100,3 +100,12 @@ def check_word_blank_capital(string):
         result = string + " is not valid"
         
     return result
+
+@app.route('/image')
+def image():
+    return render_template("index.html")
+
+# app name
+@app.errorhandler(404)
+def not_found(e):
+  return render_template("404.html")
