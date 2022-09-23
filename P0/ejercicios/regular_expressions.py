@@ -1,4 +1,3 @@
-from ast import pattern
 import re
 
 def check_word_blank_capital(str):
