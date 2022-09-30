@@ -103,9 +103,9 @@ def check_word_blank_capital(string):
 
 @app.route('/image')
 def image():
-    return render_template("index.html")
+    return render_template('index.html')
 
 # app name
 @app.errorhandler(404)
-def not_found(e):
-  return render_template("404.html")
+def not_found(error):
+  return render_template('404.html')
