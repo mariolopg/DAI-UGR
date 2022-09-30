@@ -1,3 +1,4 @@
 datos_db/
 .DS_Store
 Diapositivas/
+__pycache__/
