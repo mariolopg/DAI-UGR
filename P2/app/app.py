@@ -127,6 +127,7 @@ def api_2(id):
             
         if request.method == 'PUT':
             db.recipes.update_one({'_id':ObjectId(id)}, { "$set": json.loads(request.data) })
+            buscado = find(id)
             buscado['_id'] = str(buscado['_id'])
             resJson = dumps(buscado)
             return Response(resJson, mimetype='application/json')
