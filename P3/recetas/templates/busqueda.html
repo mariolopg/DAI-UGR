@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+    <h1 class="mt-5">Resultados de búsqueda</h1>
+    <table class="table mt-5">
+        <thead>
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Preparación</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for receta in recetas %}
+                <tr>
+                    <td><a href={% url 'detalle' receta.id %}>{{ receta.nombre }}</a></td>
+                    <td>{{ receta.preparacion }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock contenido %}
+

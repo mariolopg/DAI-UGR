@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block contenido %}
+
+<h1 class="mt-5">{{ receta.nombre }}</h1>
+<p>{{ receta.preparacion }}</p>
+
+<table class="table mt-5">
+    <thead>
+    <tr>
+        <th scope="col">Ingrediente</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Unidades</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for ingrediente in ingredientes %}
+            <tr>
+                <td>{{ ingrediente.nombre }}</td>
+                <td>{{ ingrediente.cantidad }}</td>
+                <td>{{ ingrediente.unidades }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="d-flex flex-wrap">
+    {% for foto in fotos  %}
+        <div class="d-flex flex-column">
+            <img class="img-fluid" src="/media/{{ foto.foto }}" style="max-height: 15vw; margin: 6vw">
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock contenido %}

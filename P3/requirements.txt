@@ -1,0 +1,4 @@
+# requirements.txt
+django==4.1.1
+djangorestframework
+psycopg2>=2.8
