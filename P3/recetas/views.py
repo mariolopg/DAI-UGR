@@ -67,3 +67,18 @@ def darkmode(request):
         request.session.__setitem__('dark_mode', '')
 
     return JsonResponse('', status = 201, safe = False)
+
+@csrf_exempt
+def recetas(request):
+    recetas = Receta.objects.all().values()
+
+    mode = ''
+    if request.session.__contains__('dark_mode'):
+        mode = request.session.__getitem__('dark_mode')
+
+    context = {
+        'recetas': recetas,
+        'modo': mode  
+    }
+    
+    return render(request, 'recetas.html', context)

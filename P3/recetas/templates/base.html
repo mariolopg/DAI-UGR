@@ -20,6 +20,9 @@
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>
+          <a class="me-2" href="{% url 'recetas' %}">
+            <button type="button" class="btn btn-primary">Ver recetas</button>
+          </a>
           <form class="form-check form-switch mr-5">
             <input type="checkbox" class="form-check-input" id="selector" {{ modo }}>
             <label class="custom-control-label">Modo oscuro</label>
@@ -36,7 +39,7 @@
     <script>
       $(document).ready(function(){
         if( $("#selector").is(':checked')){
-          $("body").toggleClass("bg-secondary");
+          $("body").toggleClass("bg-dark");
           $("body").toggleClass("text-white");
           $("a").toggleClass("text-white");
           $("th").toggleClass("text-white");
@@ -45,7 +48,7 @@
         }
 
         $("#selector").change(function(){
-          $("body").toggleClass("bg-secondary");
+          $("body").toggleClass("bg-dark");
           $("body").toggleClass("text-white");
           $("a").toggleClass("text-white");
           $("th").toggleClass("text-white");
