@@ -1,15 +1,14 @@
 from multiprocessing import context
-from django.shortcuts import render
+from django.shortcuts import render, Http404
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 
 from django.shortcuts import  HttpResponse, redirect
-
 from .forms import RecetaForm, IngredienteForm, FotoForm
-
 from .models import Ingrediente, Receta, Foto
+from django.contrib import messages
 
 # Create your views here.
 @csrf_exempt
@@ -72,7 +71,14 @@ def darkmode(request):
 
 @csrf_exempt
 def recetas_delete(request, _id):
-    Receta.objects.filter(id = _id).delete()
+    try: 
+        receta =  Receta.objects.get(id = _id)
+    # Si no existe se lanza un error 404
+    except Receta.DoesNotExist:
+        raise Http404('Not found')
+
+    messages.add_message(request, messages.SUCCESS, 'Receta ' + receta.nombre + ' eliminada correctamente')
+    receta.delete()
     return redirect(request.META['HTTP_REFERER'])
 
 
@@ -93,7 +99,8 @@ def add_receta(request):
                 'receta': post,
                 'modo': mode  
             }
-
+            
+            messages.add_message(request, messages.SUCCESS, 'Receta ' + post.nombre + ' añadida correctamente')
             return render(request, 'detalle.html', context)
 
     formReceta = RecetaForm
@@ -121,6 +128,7 @@ def receta_edit(request, _id):
 
         if formReceta.is_valid():
             formReceta.save()
+            messages.add_message(request, messages.SUCCESS, 'Receta ' + receta.nombre + ' editada correctamente')
             return redirect('detalle', _id = receta.id)
 
     context = {
