@@ -5,7 +5,9 @@ from django.http import HttpResponse, JsonResponse
 
 # Create your views here.
 
-from django.shortcuts import  HttpResponse
+from django.shortcuts import  HttpResponse, redirect
+
+from .forms import RecetaForm, IngredienteForm, FotoForm
 
 from .models import Ingrediente, Receta, Foto
 
@@ -82,3 +84,34 @@ def recetas(request):
     }
     
     return render(request, 'recetas.html', context)
+
+@csrf_exempt
+def recetas_delete(request, _id):
+    Receta.objects.filter(id = _id).delete()
+    return redirect(request.META['HTTP_REFERER'])
+
+
+@csrf_exempt
+def add_receta(request):
+
+    if request.method == "POST":
+        formReceta = RecetaForm(request.POST)
+
+        if formReceta.is_valid():
+            post = formReceta.save()
+
+    mode = ''
+    if request.session.__contains__('dark_mode'):
+        mode = request.session.__getitem__('dark_mode')
+
+    formReceta = RecetaForm
+    formIngrediente = IngredienteForm
+
+    context = {
+        'formReceta': formReceta,
+        'formIngrediente': formIngrediente,
+        'modo': mode  
+    }
+
+    return render(request, 'add_receta.html', context)
+    
