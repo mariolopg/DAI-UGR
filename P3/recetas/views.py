@@ -68,22 +68,7 @@ def darkmode(request):
     else:
         request.session.__setitem__('dark_mode', '')
 
-    return JsonResponse('', status = 201, safe = False)
-
-@csrf_exempt
-def recetas(request):
-    recetas = Receta.objects.all().values()
-
-    mode = ''
-    if request.session.__contains__('dark_mode'):
-        mode = request.session.__getitem__('dark_mode')
-
-    context = {
-        'recetas': recetas,
-        'modo': mode  
-    }
-    
-    return render(request, 'recetas.html', context)
+    return redirect(request.META['HTTP_REFERER'])
 
 @csrf_exempt
 def recetas_delete(request, _id):
@@ -94,22 +79,27 @@ def recetas_delete(request, _id):
 @csrf_exempt
 def add_receta(request):
 
+    mode = ''
+    if request.session.__contains__('dark_mode'):
+        mode = request.session.__getitem__('dark_mode')
+
     if request.method == "POST":
         formReceta = RecetaForm(request.POST)
 
         if formReceta.is_valid():
             post = formReceta.save()
 
-    mode = ''
-    if request.session.__contains__('dark_mode'):
-        mode = request.session.__getitem__('dark_mode')
+            context = {
+                'receta': post,
+                'modo': mode  
+            }
+
+            return render(request, 'detalle.html', context)
 
     formReceta = RecetaForm
-    formIngrediente = IngredienteForm
 
     context = {
         'formReceta': formReceta,
-        'formIngrediente': formIngrediente,
         'modo': mode  
     }
 

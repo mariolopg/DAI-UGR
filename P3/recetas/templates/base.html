@@ -21,9 +21,6 @@
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
           </div>
-          <a class="me-2" href="{% url 'recetas' %}">
-            <button type="button" class="btn btn-primary">Ver recetas</button>
-          </a>
           <form class="form-check form-switch mr-5">
             <input type="checkbox" class="form-check-input" id="selector" {{ modo }}>
             <label class="custom-control-label">Modo oscuro</label>
@@ -58,7 +55,7 @@
           $("nav").toggleClass("navbar-dark bg-dark");
 
           $.ajax({                    
-            url: 'darkmode',     
+            url: '/darkmode',     
             type: 'post',
           });
         })
