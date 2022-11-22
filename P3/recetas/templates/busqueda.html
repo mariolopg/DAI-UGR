@@ -16,9 +16,9 @@
                     <td><a href={% url 'detalle' receta.id %}>{{ receta.nombre }}</a></td>
                     <td>{{ receta.preparacion }}</td>
                     <td>
-                        <button type="button" class="btn btn-secondary me-2">
-                          <i class="fa-solid fa-pen-to-square"></i>
-                        </button>
+                        <a class="btn btn-secondary me-2" href="{% url 'receta_edit' receta.id %}">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
                         <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{receta.id}}" >
                           <i class="fa-solid fa-trash"></i>
                         </button>
@@ -28,7 +28,7 @@
                  <!-- Modal borrar -->
                  <div class="modal fade" id="staticBackdrop-{{receta.id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
-                      <div class="modal-content">
+                      <div class="modal-content" id="modalbg">
                         <div class="modal-header">
                           <h1 class="modal-title fs-5" id="staticBackdropLabel">¿Estás seguro de eliminar la receta: {{receta.nombre}}?</h1>
                         </div>

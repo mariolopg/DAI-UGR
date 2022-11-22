@@ -104,4 +104,29 @@ def add_receta(request):
     }
 
     return render(request, 'add_receta.html', context)
+
+@csrf_exempt
+def receta_edit(request, _id):
+
+    receta = Receta.objects.get(id = _id)
+
+    mode = ''
+    if request.session.__contains__('dark_mode'):
+        mode = request.session.__getitem__('dark_mode')
+
+    formReceta = RecetaForm(instance = receta)
+
+    if request.method == 'POST':
+        formReceta = RecetaForm(request.POST, instance = receta)
+
+        if formReceta.is_valid():
+            formReceta.save()
+            return redirect('detalle', _id = receta.id)
+
+    context = {
+        'formReceta': formReceta,
+        'modo': mode  
+    }
+
+    return render(request, 'add_receta.html', context)
     
