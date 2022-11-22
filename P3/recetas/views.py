@@ -125,6 +125,7 @@ def receta_edit(request, _id):
 
     context = {
         'formReceta': formReceta,
+        'receta': receta,
         'modo': mode  
     }
 
