@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.github'
+    'allauth.socialaccount.providers.github',
+    'django_bootstrap5'
 ]
 
 MIDDLEWARE = [
@@ -155,4 +156,4 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-LOGIN_REDIRECT_URL = ''
+LOGIN_REDIRECT_URL = '/'

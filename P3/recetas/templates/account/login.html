@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col col-8  mx-auto">
+            <div class="mt-5 pb-5"></div>
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="h4">{% trans "Sign In" %}</h1>
+                    <hr>
+                    <div class="col">
+                        <form class="login" method="POST" action="{% url 'account_login' %}">
+                            {% csrf_token %}
+                            {% bootstrap_form form %}
+                            {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                            {% endif %}
+                            <button class="btn btn-primary btn-block" type="submit">{% trans "Sign In" %}</button>
+                            <a class="btn btn-primary btn-block" href="{% provider_login_url 'github' %}">Iniciar sesión con Github</a>
+                            <div class="row mt-2">
+                                <a class="button secondaryAction" href="{% url 'account_reset_password' %}">
+                                    {% trans "Forgot Password?" %}
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
