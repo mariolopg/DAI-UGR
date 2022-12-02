@@ -7,22 +7,27 @@
         <tr>
             <th scope="col">Nombre</th>
             <th scope="col">Preparación</th>
-            <th scope="col"></th>
-        </tr>
+            {% if user.is_staff %}
+              <th scope="col"></th>
+            {% endif %}
+          </tr>
         </thead>
         <tbody>
-            {% for receta in recetas %}
-                <tr>
-                    <td><a href={% url 'detalle' receta.id %}>{{ receta.nombre }}</a></td>
-                    <td>{{ receta.preparacion }}</td>
-                    <td>
-                        <a class="btn btn-secondary me-2" href="{% url 'receta_edit' receta.id %}">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
-                        <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{receta.id}}" >
-                          <i class="fa-solid fa-trash"></i>
-                        </button>
-                    </td>
+          {% for receta in recetas %}
+          <tr>
+            <td><a href={% url 'detalle' receta.id %}>{{ receta.nombre }}</a></td>
+            <td>{{ receta.preparacion }}</td>
+            {% if user.is_staff %}
+              <td>
+                <a class="btn btn-secondary me-2" href="{% url 'receta_edit' receta.id %}">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <button type="button" class="btn btn-danger me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop-{{receta.id}}" >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            {% endif %}
+            
                 </tr>
 
                  <!-- Modal borrar -->
@@ -43,11 +48,13 @@
         </tbody>
     </table>
 
-    <div class="d-flex justify-content-sm-center">
-        <a class="m-auto" href="{% url 'add_receta' %}">
-          <button type="button" class="btn btn-primary">Añadir receta</button>
-        </a>
-    </div>
+    {% if user.is_staff %}
+      <div class="d-flex justify-content-sm-center">
+          <a class="m-auto" href="{% url 'add_receta' %}">
+            <button type="button" class="btn btn-primary">Añadir receta</button>
+          </a>
+      </div>
+    {% endif %}
 
 {% endblock %}
 

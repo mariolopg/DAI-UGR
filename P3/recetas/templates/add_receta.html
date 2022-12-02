@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% if user.is_staff %}
 <form method="post" class="mt-3">
     {% if receta %}
-        <h1> Editar receta {{ receta.nombre }} </h1>
+    <h1> Editar receta {{ receta.nombre }} </h1>
     {% else %}
-        <h1> Añadir nueva receta </h1>
+    <h1> Añadir nueva receta </h1>
     {% endif %}
     <div class="d-grid gap-2">
         {% csrf_token %}
@@ -13,13 +14,13 @@
         <div class="d-flex justify-content-sm-center">
             <button type="submit" class="btn btn-primary">
                 {% if receta %}
-                    Guardar cambios
+                Guardar cambios
                 {% else %}
-                    Añadir
+                Añadir
                 {% endif %}
             </button>
         </div>
     </div>
 </form>
-
+{% endif %}
 {% endblock %}
