@@ -1,0 +1,75 @@
+### *************************************************
+### * P 2.2
+### *************************************************
+
+GET http://localhost:5000/api/recipes
+
+###
+
+GET http://localhost:5000/api/recipes?con=vodka
+
+###
+
+POST http://localhost:5000/api/recipes
+
+{
+    "name": "Cocktail de prueba",
+    "ingredients": [{ "name": "prueba ingrediente", "quantity": { "value": "valor", "unit": "unidad" } }],
+    "garnish": "prueba garnish",
+    "instructions": ["prueba instrucciones"],
+    "slug": "prueba-slug"
+}
+
+###
+
+GET http://localhost:5000/api/recipes/6346a74072e942386a42263c
+
+###
+
+PUT http://localhost:5000/api/recipes/5f7b4b6204799f5cf837b1e1
+
+{
+    "name": "Cambio de nombre"
+}
+
+###
+
+DELETE http://localhost:5000/api/recipes/6346a74072e942386a42263c
+
+### *************************************************
+### * API V2
+### *************************************************
+
+GET http://localhost:5000/api/v2/recipes
+
+###
+
+GET http://localhost:5000/api/v2/recipes/5f7b4b6204799f5cf837b1e1
+
+###
+
+GET http://localhost:5000/api/v2/recipes?con=vodka
+
+###
+
+POST http://localhost:5000/api/v2/recipes
+
+{
+    "name": "Cocktail de prueba",
+    "ingredients": [{ "name": "prueba ingrediente", "quantity": { "value": "valor", "unit": "unidad" } }],
+    "garnish": "prueba garnish",
+    "instructions": ["prueba instrucciones"],
+    "slug": "prueba-slug"
+}
+
+###
+
+PUT http://localhost:5000/api/v2/recipes/6346a75f72e942386a42263d
+
+{
+    "name": "Cambio de asd"
+}
+
+###
+
+DELETE http://localhost:5000/api/v2/recipes/6346a75f72e942386a42263d
