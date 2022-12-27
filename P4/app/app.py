@@ -3,7 +3,7 @@
 from bson.json_util import dumps
 from pymongo import MongoClient
 from bson import ObjectId
-from flask import Flask, Response, request, jsonify
+from flask import Flask, Response, request, jsonify, render_template
 from flask_restful import Resource, Api
 import json
 
@@ -199,7 +199,10 @@ class RecipesWithID(Resource):
             return  jsonify({"_id": str(buscado['_id'])})
         
         return {'error':'Not found'}, 404
+
+@app.route("/")
+def index():
+    return render_template('index.html')
         
-    
 api.add_resource(Recipes, '/api/v2/recipes')
 api.add_resource(RecipesWithID, '/api/v2/recipes/<string:id>')
