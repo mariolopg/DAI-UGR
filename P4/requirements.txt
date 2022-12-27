@@ -2,5 +2,3 @@
 Flask
 pymongo
 flask-restful
-flask-bootstrap5
-bootstrap-flask
