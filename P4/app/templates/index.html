@@ -7,7 +7,7 @@
       Add Recipe
     </button>
 
-    <table class="table table-sm">
+    <table class="table table-sm" id="recipesTable">
       <thead>
         <tr>
           <th>N</th>
@@ -61,11 +61,10 @@
             html_str += `<tr>
                           <td>${i}</td>
                           <td>
-                              <button onclick="detalle(${i-1})" 
-                                    type="button" class="btn btn-outline btn-sm"
+                              <span onclick="detalle(${i-1})" type="button"
                                     data-bs-toggle="modal" data-bs-target="#detailModal">
                               ${fila.name}
-                          </button>
+                          </span>
                     </td>
                     <td>
                     <button type="button" class="btn btn-warning btn-sm" onclick="editModal(${i-1})">Edit</button>
