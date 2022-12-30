@@ -73,7 +73,41 @@
       </div>
   </div>
 
-  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="editModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Edit Recipe</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="editNameInput">Name</label>
+              <input type="text" class="form-control" id="editNameInput" aria-describedby="editNameHelp">
+              <small id="editNameHelp" class="form-text text-muted">A name for the recipe.</small>
+            </div>
+            <div class="form-group">
+              <label for="editComponentsInput">Components</label>
+              <textarea class="form-control" id="editComponentsInput" aria-describedby="editComponentsHelp"></textarea>
+              <small id="editComponentsHelp" class="form-text text-muted">The components recipe, in lines</small>
+            </div>
+            <div class="form-group">
+              <label for="editInstructionsInput">Instructions</label>
+              <textarea class="form-control" id="editInstructionsInput" aria-describedby="editInstructionsHelp"></textarea>
+              <small id="editInstructionsHelp" class="form-text text-muted">The instructions, in lines</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="editButton">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -114,7 +148,7 @@
                           </button>
                     </td>
                     <td>
-                    <button type="button" class="btn btn-warning btn-sm">Edit</button>
+                    <button type="button" class="btn btn-warning btn-sm" onclick="editModal(${i-1})">Edit</button>
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteModal(${i-1})">Delete</button>
                     </td>
                     </tr>`         // ES6 templates
@@ -166,7 +200,7 @@
       data = {
         name: recipeName,
         ingredients: ingredients,
-        instructions: recipeComponents,
+        instructions: recipeInstructions,
         slug: slug
       }
 
@@ -184,9 +218,66 @@
 
     };
 
+    function editModal(i) {
+      var receta = recetas[i];
+      var modal = new bootstrap.Modal(document.getElementById('editModal'))
+      modal.show();
+
+      document.getElementById("editNameInput").value = receta.name
+      document.getElementById("editComponentsInput").value = ""
+      document.getElementById("editInstructionsInput").value = ""
+
+      receta.ingredients.forEach(ingredient => {
+        document.getElementById("editComponentsInput").value += ingredient.name + '\n'
+      });
+
+      receta.instructions.forEach(instruction => {
+        document.getElementById("editInstructionsInput").value += instruction + '\n'
+      });
+
+      document.getElementById("editButton").onclick = function(){
+        editRecipe(receta._id)
+      }
+    }
+
+    function editRecipe(id) {
+      var editNameInput = document.getElementById("editNameInput")
+      var recipeName = editNameInput.value
+
+      var editComponentsInput = document.getElementById("editComponentsInput")
+      var recipeComponents = editComponentsInput.value.split("\n")
+
+      var editInstructionsInput = document.getElementById("editInstructionsInput")
+      var recipeInstructions = editInstructionsInput.value.split("\n")
+
+      var ingredients = []
+      recipeComponents.forEach(ingredient => {
+        if(ingredient != "")
+          ingredients.push({"name": ingredient})
+      });
+
+      data = {
+        name: recipeName,
+        ingredients: ingredients,
+        instructions: recipeInstructions
+      }
+
+      var url = "/api/v2/recipes/" + id
+      fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+      })
+      .then(response => response.json()) 
+      .then(json => {
+        console.log(json)
+        window.location = "/"
+      })
+      .catch(err => console.log(err));
+    }
+
     function deleteModal(i) {
       var receta = recetas[i];
-      var deleteFun = "deleteRecipe(" + receta._id + ")"
       var modal = new bootstrap.Modal(document.getElementById('deleteModal'))
       modal.show();
 
