@@ -16,14 +16,21 @@
         <script src="https://kit.fontawesome.com/35f230cea2.js" crossorigin="anonymous"></script>
     </head>
 
-    <body id="body">
+    <body id="body" class="fs-6">
     <nav class="navbar navbar-expand-lg bg-light" id="navbar">
         <div class="container">
             <a class="navbar-brand" href="/">Práctica 4</a>
-            <form class="form-check form-switch mr-5">
-                <label class="custom-control-label">Dark mode</label>
-                <input type="checkbox" class="form-check-input" id="switchMode" onclick="changeMode()">
-            </form>
+            <div>
+                <select class="select" id="fontSize" onchange="changeFontSize()">
+                    <option value="fs-1">Muy grande</option>
+                    <option value="fs-3">Grande</option>
+                    <option value="fs-6">Normal</option>
+                  </select>
+                  <form class="form-check form-switch mr-5">
+                    <label class="custom-control-label">Dark mode</label>
+                    <input type="checkbox" class="form-check-input" id="switchMode" onclick="changeMode()">
+                </form>
+            </div>
         </div>
     </nav>
 
@@ -34,16 +41,26 @@
 
     <script>
         window.onload = function(){
-            let mode = localStorage.getItem('darkMode')
-            
-            if(mode == null){
-                localStorage.setItem('darkMode', false)
+            var mode = localStorage.getItem('darkMode')
+            var fontSize = localStorage.getItem('fontSize')
+
+            if(fontSize == null){
+                document.getElementById("fontSize").value = "fs-6"
+                localStorage.setItem('fontSize', 'fs-6')
             }
+            else{
+                document.getElementById("fontSize").value = fontSize
+                document.getElementById("body").classList.toggle(fontSize)
+            }
+
+            if(mode == null)
+                localStorage.setItem('darkMode', false)
             else
                 if (mode == 'true'){
                     document.getElementById("switchMode").checked = true
                     changeColors()
                 }
+
         }
 
         function changeMode() {
@@ -64,6 +81,15 @@
             var navbar = document.getElementById("navbar")
             navbar.classList.toggle("bg-dark")
         }
+
+        function changeFontSize() {
+            let oldFontSize = localStorage.getItem('fontSize')
+            let fontSize = document.getElementById("fontSize").value
+            document.getElementById("body").classList.toggle(oldFontSize)
+            document.getElementById("body").classList.toggle(fontSize)
+            localStorage.setItem('fontSize', fontSize)
+        }
+
     </script>
     
     {% block script %}
