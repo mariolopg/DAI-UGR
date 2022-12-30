@@ -74,11 +74,13 @@
             body.classList.toggle("bg-dark")
             body.classList.toggle("text-white")
 
-            var table = document.getElementById("recipesTable")
-            table.classList.toggle("table-dark")
-
-            var navbar = document.getElementById("navbar")
-            navbar.classList.toggle("bg-dark")
+            document.getElementById("recipesTable").classList.toggle("table-dark")
+            document.getElementById("navbar").classList.toggle("bg-dark")
+            document.getElementById("modalDetailContent").classList.toggle("bg-dark")
+            document.getElementById("newModalContent").classList.toggle("bg-dark")
+            document.getElementById("editModalContent").classList.toggle("bg-dark")
+            document.getElementById("deleteModalContent").classList.toggle("bg-dark")
+            
         }
 
         function changeFontSize() {
