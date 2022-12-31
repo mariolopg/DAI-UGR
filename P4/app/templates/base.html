@@ -20,6 +20,10 @@
     <nav class="navbar navbar-expand-lg bg-light" id="navbar">
         <div class="container">
             <a class="navbar-brand" href="/">Práctica 4</a>
+            <div class="d-flex">
+                <input id="searchInput" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-primary btn-outline btn-sm" onclick="searchRecipe()">Search</button>
+              </div>
             <div>
                 <select class="select" id="fontSize" onchange="changeFontSize()">
                     <option value="fs-1">Larger</option>

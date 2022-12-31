@@ -47,45 +47,51 @@
 
 {% block script %}
   <script>
-    const recetas = []              // declaraciones   
-    let html_str  = ''              // de variables
-    let i         = 0               //
+    var recetas = []              // declaraciones         //
     // fetch devuelve una promise
-    fetch('/api/recipes')           // GET por defecto,
-    .then(res => res.json())        // respuesta en json, otra promise
-    .then(filas => {                // arrow function
-        filas.forEach(fila => {     // bucle ES6, arrow function
-            i++
-            recetas.push(fila)      // se guardan para después sacar cada una             
-            // ES6 templates
-            html_str += `<tr>
-                          <td>${i}</td>
-                          <td>
-                              <span onclick="detalle(${i-1})" type="button"
-                                    data-bs-toggle="modal" data-bs-target="#detailModal">
-                              ${fila.name}
-                          </span>
-                    </td>
-                    <td>
-                    <button type="button" class="btn btn-warning btn-sm" onclick="editModal(${i-1})">Edit</button>
-                    <button type="button" class="btn btn-danger btn-sm" onclick="deleteModal(${i-1})">Delete</button>
-                    </td>
-                    </tr>`         // ES6 templates
-        });
-        document.getElementById('tbody').innerHTML=html_str  // se pone el html en su sitio
-    })
+    setRecipes('/api/recipes')
+
+    function setRecipes(url) {
+      fetch(url)           // GET por defecto,
+      .then(res => res.json())        // respuesta en json, otra promise
+      .then(data => {                // arrow function
+        recetas = []
+        let i = 0
+        let html_str = ''
+        data.forEach(fila => {     // bucle ES6, arrow function
+              i++
+              recetas.push(fila)      // se guardan para después sacar cada una             
+              // ES6 templates
+              html_str += `<tr>
+                            <td>${i}</td>
+                            <td>
+                                <span onclick="detalle(${i-1})" type="button"
+                                      data-bs-toggle="modal" data-bs-target="#detailModal">
+                                ${fila.name}
+                            </span>
+                      </td>
+                      <td>
+                      <button type="button" class="btn btn-warning btn-sm" onclick="editModal(${i-1})">Edit</button>
+                      <button type="button" class="btn btn-danger btn-sm" onclick="deleteModal(${i-1})">Delete</button>
+                      </td>
+                      </tr>`         // ES6 templates
+          });
+
+          document.getElementById('tbody').innerHTML = html_str
+      })
+    }
 
     function detalle(i) { 
-      var modal = new bootstrap.Modal(document.getElementById('modalDetail'))
+      let modal = new bootstrap.Modal(document.getElementById('modalDetail'))
       modal.show();
 
-      var receta = recetas[i];
+      let receta = recetas[i];
       document.getElementById('modalTitle').innerHTML = receta.name;
         
       document.getElementById('ingredients').innerHTML = ""
 
       receta.ingredients.forEach(ingredient => {
-        var li = document.createElement("li");
+        let li = document.createElement("li");
         li.appendChild(document.createTextNode(ingredient.name));
 
         document.getElementById('ingredients').append(li);
@@ -94,24 +100,24 @@
       document.getElementById('instructions').innerHTML = ""
 
       receta.instructions.forEach(instruction => {
-        var p = document.createElement("p");
+        let p = document.createElement("p");
         p.innerHTML = "- " + instruction;
         document.getElementById('instructions').append(p);
       })
     }
 
     function saveRecipe(){
-      var nameInput = document.getElementById("nameInput")
-      var recipeName = nameInput.value
+      let nameInput = document.getElementById("nameInput")
+      let recipeName = nameInput.value
 
-      var componentsInput = document.getElementById("componentsInput")
-      var recipeComponents = componentsInput.value.split("\n")
+      let componentsInput = document.getElementById("componentsInput")
+      let recipeComponents = componentsInput.value.split("\n")
 
-      var instructionsInput = document.getElementById("instructionsInput")
-      var recipeInstructions = instructionsInput.value.split("\n")
+      let instructionsInput = document.getElementById("instructionsInput")
+      let recipeInstructions = instructionsInput.value.split("\n")
 
-      var slug = recipeName.toLowerCase().replaceAll(" ", "-")
-      var ingredients = []
+      let slug = recipeName.toLowerCase().replaceAll(" ", "-")
+      let ingredients = []
       recipeComponents.forEach(ingredient => {
         ingredients.push({"name": ingredient})
       });
@@ -138,8 +144,8 @@
     };
 
     function editModal(i) {
-      var receta = recetas[i];
-      var modal = new bootstrap.Modal(document.getElementById('editModal'))
+      let receta = recetas[i];
+      let modal = new bootstrap.Modal(document.getElementById('editModal'))
       modal.show();
 
       document.getElementById("editNameInput").value = receta.name
@@ -160,16 +166,21 @@
     }
 
     function editRecipe(id) {
-      var editNameInput = document.getElementById("editNameInput")
-      var recipeName = editNameInput.value
+      let editNameInput = document.getElementById("editNameInput")
+      let recipeName = editNameInput.value
 
-      var editComponentsInput = document.getElementById("editComponentsInput")
-      var recipeComponents = editComponentsInput.value.split("\n")
+      let editComponentsInput = document.getElementById("editComponentsInput")
+      let recipeComponents = editComponentsInput.value.split("\n")
 
-      var editInstructionsInput = document.getElementById("editInstructionsInput")
-      var recipeInstructions = editInstructionsInput.value.split("\n")
+      let editInstructionsInput = document.getElementById("editInstructionsInput")
+      let recipeInstructions = editInstructionsInput.value.split("\n")
+      let instructions = []
+      recipeInstructions.forEach(instruction => {
+        if(instruction != "")
+          instructions.push(instruction)
+      })
 
-      var ingredients = []
+      let ingredients = []
       recipeComponents.forEach(ingredient => {
         if(ingredient != "")
           ingredients.push({"name": ingredient})
@@ -178,10 +189,10 @@
       data = {
         name: recipeName,
         ingredients: ingredients,
-        instructions: recipeInstructions
+        instructions: instructions
       }
 
-      var url = "/api/v2/recipes/" + id
+      let url = "/api/v2/recipes/" + id
       fetch(url, {
         method: "PUT",
         body: JSON.stringify(data),
@@ -196,8 +207,8 @@
     }
 
     function deleteModal(i) {
-      var receta = recetas[i];
-      var modal = new bootstrap.Modal(document.getElementById('deleteModal'))
+      let receta = recetas[i];
+      let modal = new bootstrap.Modal(document.getElementById('deleteModal'))
       modal.show();
 
       document.getElementById("deleteRecipeName").innerHTML = receta.name
@@ -207,7 +218,7 @@
     }
 
     function deleteRecipe(id){
-      var url = "/api/v2/recipes/" + id
+      let url = "/api/v2/recipes/" + id
       fetch(url, {
         method: "DELETE",
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -217,6 +228,17 @@
         window.location = "/"
       })
       .catch(err => console.log(err));
+    }
+
+    function searchRecipe() {
+      let searchInput = document.getElementById("searchInput")
+      let searchedRecipe = searchInput.value
+      let url = '/api/recipes'
+
+      if(searchedRecipe != '')
+        url = '/recetas_de/' + searchedRecipe
+
+      setRecipes(url)
     }
 
   </script>   
