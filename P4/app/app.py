@@ -47,9 +47,15 @@ def recetas_de(cocktail):
     regex = '(?i)' + cocktail
     # Le indico a la query que va a usar una expresión regular
     myquery = { 'slug': {'$regex': regex} }
-    recipe = db.recipes.find(myquery)
+    recipes = db.recipes.find(myquery)
+
+    response = []
+
+    for recipe in recipes:
+        recipe['_id'] = str(recipe['_id'])
+        response.append(recipe)
     
-    resJson = dumps(recipe)
+    resJson = dumps(response)
     return Response(resJson, mimetype='application/json')
 
 @app.route('/recetas_con/<searched_ingredient>')
